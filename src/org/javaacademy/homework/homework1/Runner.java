@@ -66,7 +66,8 @@ public class Runner {
         }
         double averageTemperature = (double) sum / union.size();
         System.out.printf(
-                "Среднесуточная температура воздуха за два месяца составила = %.2f градуса\n", averageTemperature);
+                "Среднесуточная температура воздуха за два месяца составила = %.1f градуса\n",
+                Math.round(averageTemperature * 10.0) / 10.0);
 
         System.out.println("---------------Задание №3 Ресторанный гуру------------------");
         //Задание №3 Ресторанный гуру
