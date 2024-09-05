@@ -64,10 +64,9 @@ public class Runner {
         for (int elem : union) {
             sum += elem;
         }
-        double averageTemperature = (double) sum / union.size();
+        double averageTemperature = Math.round((double) sum / union.size() * 10) / 10.0;
         System.out.printf(
-                "Среднесуточная температура воздуха за два месяца составила = %.1f градуса\n",
-                Math.round(averageTemperature * 10.0) / 10.0);
+                "Среднесуточная температура воздуха за два месяца составила = %.1f градуса\n", averageTemperature);
 
         System.out.println("---------------Задание №3 Ресторанный гуру------------------");
         //Задание №3 Ресторанный гуру
