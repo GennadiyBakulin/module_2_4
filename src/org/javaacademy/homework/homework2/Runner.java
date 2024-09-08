@@ -1,0 +1,92 @@
+package org.javaacademy.homework.homework2;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Runner {
+    private static final String PATH_TO_FILE = "luggage.csv";
+
+    public static void main(String[] args) throws IOException {
+        //1. Задание: Грузчики в Болгарии
+        //В аэропорт Болгарии прилетает самолет. В самолете багаж.
+        //На выгрузной ленте может находиться не больше 10 чемоданов.
+        //Задача: разгрузить багажное отделение самолета, загружая на ленту не более 10 чемоданов.
+        //Примечание: багаж должен отдаваться в том же порядке, в котором попадал на ленту.
+
+        //Т.е нужно создать функцию, в которую приходит имя файла(это прибывший багаж).
+        //От туда будет считываться порциями по 10 штук багаж. Этот багаж перемещается на ленту.
+        //Печатается: Начинается загрузка на ленту
+        //После того как лента заполнена или больше нет чемоданов:
+        //Печатается: Лента загружена, начинается выдача багажа.
+        //Лента включается и с нее пропадают чемоданы.
+        //Печатается на экран: {Номер багажа} - выдан
+        //После окончания выдачи печатается: Лента пустая, закончена выдача багажа
+
+        //Т.е. прибыл багаж (файл luggage.csv).
+        //Там находится 20 чемоданов(номера от 1 до 20) . На экране будет выведено:
+        //Начинается загрузка на ленту
+        //Лента загружена, начинается выдача багажа
+        //1 - выдан
+        //2 - выдан
+        //....
+        //10 - выдан
+        //Лента пустая, закончена выдача багажа
+        //Начинается загрузка на ленту
+        //Лента загружена, начинается выдача багажа
+        //11 - выдан
+        //12 - выдан
+        //....
+        //20 - выдан
+        //Лента пустая, закончена выдача багажа
+
+        //Протестировать функцию на файле luggage.csv.
+
+        //2. Задание: Таможня в Болгарии
+        //Таможня собирает статистику о весе ввезенных чемоданов.
+        //Есть 3 категории чемоданов: легкий (до 5 кг), средний (от 5 кг до 10кг), тяжелый (от 10 кг)
+        //Необходимо создать функцию, которая:
+        //считывает файл с багажом, суммирует вес по каждой категории и возвращает сгруппированные данные
+        //т.е функция должна вернуть данные (не распечатать), в которых будет инфо:
+        //категория чемодана - сумма всех чемоданов этой категории
+
+        //Пример возврата:
+        //легкий - 205
+        //средний - 513
+        //тяжелый - 1200
+
+        //Протестировать функцию на файле luggage.csv.
+        System.out.println(statistic(PATH_TO_FILE));
+    }
+
+    private static Map<String, Integer> statistic(String path) {
+        Scanner scanner = new Scanner(ClassLoader.getSystemResourceAsStream(path));
+        Map<String, Integer> data = new LinkedHashMap<>();
+        List<Integer> list = new ArrayList<>();
+        while (scanner.hasNext()) {
+            String[] elem = scanner.nextLine().split(";");
+            try {
+                list.add(Integer.parseInt(elem[1]));
+            } catch (NumberFormatException e) {
+                continue;
+            }
+        }
+        Integer easy = list.stream()
+                .filter(elem -> elem < 5)
+                .reduce(Integer::sum).get();
+        Integer medium = list.stream()
+                .filter(elem -> elem >= 5 && elem < 10)
+                .reduce(Integer::sum).get();
+        Integer heavy = list.stream()
+                .filter(elem -> elem >= 10)
+                .reduce(Integer::sum).get();
+
+        data.put("легкий", easy);
+        data.put("средний", medium);
+        data.put("тяжелый", heavy);
+        return data;
+    }
+}
