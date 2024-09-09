@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -68,7 +69,7 @@ public class Runner {
     }
 
     public static void unloadLuggage(String path) {
-        Scanner scanner = new Scanner(ClassLoader.getSystemResourceAsStream(path));
+        Scanner scanner = new Scanner(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream(path)));
         scanner.nextLine();
 
         while (scanner.hasNext()) {
@@ -89,13 +90,13 @@ public class Runner {
     }
 
     public static Map<String, Integer> statistic(String path) {
-        Scanner scanner = new Scanner(ClassLoader.getSystemResourceAsStream(path));
+        Scanner scanner = new Scanner(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream(path)));
         Map<String, Integer> data = new LinkedHashMap<>();
         List<Integer> list = new ArrayList<>();
 
         while (scanner.hasNext()) {
-            String weight = scanner.nextLine().split(";")[1];
             try {
+                String weight = scanner.nextLine().split(";")[1];
                 list.add(Integer.parseInt(weight));
             } catch (NumberFormatException e) {
                 continue;
