@@ -3,8 +3,10 @@ package org.javaacademy.homework.homework2;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Runner {
@@ -45,6 +47,8 @@ public class Runner {
 
         //Протестировать функцию на файле luggage.csv.
 
+        unloadLuggage(PATH_TO_FILE);
+
         //2. Задание: Таможня в Болгарии
         //Таможня собирает статистику о весе ввезенных чемоданов.
         //Есть 3 категории чемоданов: легкий (до 5 кг), средний (от 5 кг до 10кг), тяжелый (от 10 кг)
@@ -59,34 +63,58 @@ public class Runner {
         //тяжелый - 1200
 
         //Протестировать функцию на файле luggage.csv.
+
         System.out.println(statistic(PATH_TO_FILE));
     }
 
-    private static Map<String, Integer> statistic(String path) {
+    public static void unloadLuggage(String path) {
+        Scanner scanner = new Scanner(ClassLoader.getSystemResourceAsStream(path));
+        scanner.nextLine();
+
+        while (scanner.hasNext()) {
+            Queue<String> tape = new LinkedList<>();
+            int maxCountUploadingToTape = 10;
+            int countUploadingToTape = 0;
+            System.out.println("Начинается загрузка на ленту");
+            while (scanner.hasNext() && countUploadingToTape++ < maxCountUploadingToTape) {
+                String numberBaggage = scanner.next().split(";")[0];
+                tape.add(numberBaggage);
+            }
+            System.out.println("Лента загружена, начинается выдача багажа");
+            while (!tape.isEmpty()) {
+                System.out.println(tape.poll() + " - выдан");
+            }
+            System.out.println("Лента пустая, закончена выдача багажа");
+        }
+    }
+
+    public static Map<String, Integer> statistic(String path) {
         Scanner scanner = new Scanner(ClassLoader.getSystemResourceAsStream(path));
         Map<String, Integer> data = new LinkedHashMap<>();
         List<Integer> list = new ArrayList<>();
+
         while (scanner.hasNext()) {
-            String[] elem = scanner.nextLine().split(";");
+            String weight = scanner.nextLine().split(";")[1];
             try {
-                list.add(Integer.parseInt(elem[1]));
+                list.add(Integer.parseInt(weight));
             } catch (NumberFormatException e) {
                 continue;
             }
         }
-        Integer easy = list.stream()
-                .filter(elem -> elem < 5)
-                .reduce(Integer::sum).get();
-        Integer medium = list.stream()
-                .filter(elem -> elem >= 5 && elem < 10)
-                .reduce(Integer::sum).get();
-        Integer heavy = list.stream()
-                .filter(elem -> elem >= 10)
-                .reduce(Integer::sum).get();
 
-        data.put("легкий", easy);
-        data.put("средний", medium);
-        data.put("тяжелый", heavy);
+        data.put("легкий", list.stream()
+                .filter(elem -> elem < 5)
+                .mapToInt(elem -> elem)
+                .sum());
+        data.put("средний", list.stream()
+                .filter(elem -> elem >= 5 && elem < 10)
+                .mapToInt(elem -> elem)
+                .sum());
+        data.put("тяжелый", list.stream()
+                .filter(elem -> elem >= 10)
+                .mapToInt(elem -> elem)
+                .sum());
+
         return data;
     }
 }
