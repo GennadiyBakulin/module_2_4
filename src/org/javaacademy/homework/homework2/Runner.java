@@ -71,10 +71,10 @@ public class Runner {
     public static void unloadLuggage(String path) {
         Scanner scanner = new Scanner(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream(path)));
         scanner.nextLine();
+        Queue<String> tape = new LinkedList<>();
+        int maxCountUploadingToTape = 10;
 
         while (scanner.hasNext()) {
-            Queue<String> tape = new LinkedList<>();
-            int maxCountUploadingToTape = 10;
             int countUploadingToTape = 0;
             System.out.println("Начинается загрузка на ленту");
             while (scanner.hasNext() && countUploadingToTape++ < maxCountUploadingToTape) {
