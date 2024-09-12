@@ -1,10 +1,8 @@
 package org.javaacademy.homework.homework2;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
@@ -91,30 +89,23 @@ public class Runner {
 
     public static Map<String, Integer> statistic(String path) {
         Scanner scanner = new Scanner(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream(path)));
-        Map<String, Integer> data = new LinkedHashMap<>();
-        List<Integer> list = new ArrayList<>();
+        Map<String, Integer> data = new HashMap<>();
 
         while (scanner.hasNext()) {
             try {
-                String weight = scanner.nextLine().split(";")[1];
-                list.add(Integer.parseInt(weight));
+                String[] luggage = scanner.nextLine().split(";");
+                Integer weightSuitcase = Integer.parseInt(luggage[1]);
+                if (weightSuitcase < 5) {
+                    data.merge("легкий", weightSuitcase, Integer::sum);
+                } else if (weightSuitcase >= 10) {
+                    data.merge("тяжелый", weightSuitcase, Integer::sum);
+                } else {
+                    data.merge("средний", weightSuitcase, Integer::sum);
+                }
             } catch (NumberFormatException e) {
                 continue;
             }
         }
-
-        data.put("легкий", list.stream()
-                .filter(elem -> elem < 5)
-                .mapToInt(elem -> elem)
-                .sum());
-        data.put("средний", list.stream()
-                .filter(elem -> elem >= 5 && elem < 10)
-                .mapToInt(elem -> elem)
-                .sum());
-        data.put("тяжелый", list.stream()
-                .filter(elem -> elem >= 10)
-                .mapToInt(elem -> elem)
-                .sum());
 
         return data;
     }
