@@ -1,5 +1,12 @@
 package org.javaacademy.homework.homework4.ex1;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 public class Runner {
     public static void main(String[] args) {
         //ИСПОЛЬЗОВАНИЕ FOR, WHILE ЗАПРЕЩЕНО В ЭТОЙ ДЗ! Только СТРИМЫ.
@@ -19,5 +26,23 @@ public class Runner {
         // ...
         // k048се178
         // k049се178
+
+        int firstNumber = 1;
+        int lastNumber = 50;
+        String numberBureaucrat = "04";
+
+        Set<Car> setCars1 = IntStream.range(firstNumber, lastNumber + 1)
+                .mapToObj(number -> new Car("а0%02dан799".formatted(number)))
+                .collect(Collectors.toSet());
+
+        Set<Car> setCars2 = IntStream.range(firstNumber, lastNumber + 1)
+                .mapToObj(number -> new Car("к0%02dсе178".formatted(number)))
+                .collect(Collectors.toSet());
+
+        Stream.concat(setCars1.stream(), setCars2.stream())
+                .filter(car -> car.getNumber().startsWith(numberBureaucrat, 1))
+                .map(Car::getNumber)
+                .sorted()
+                .forEach(System.out::println);
     }
 }
