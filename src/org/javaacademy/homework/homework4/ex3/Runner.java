@@ -64,7 +64,7 @@ public class Runner {
                 .filter(skyscraper -> skyscraper.getHeight() > maxHeight)
                 .peek(System.out::println)
                 .findFirst()
-                .ifPresentOrElse(skyscraper -> System.out.println(),
+                .ifPresentOrElse(skyscraper -> {},
                         () -> System.out.println("небоскреба выше километра - нет"));
     }
 }
