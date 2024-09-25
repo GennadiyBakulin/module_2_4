@@ -60,12 +60,11 @@ public class Runner {
 
         int maxHeight = 1000;
 
-        if (newSkyscraperList.stream().noneMatch(skyscraper -> skyscraper.getHeight() > maxHeight)) {
-            System.out.println("небоскреба выше километра - нет");
-        } else {
-            newSkyscraperList.stream()
-                    .filter(skyscraper -> skyscraper.getHeight() > maxHeight)
-                    .forEach(System.out::println);
-        }
+        newSkyscraperList.stream()
+                .filter(skyscraper -> skyscraper.getHeight() > maxHeight)
+                .peek(System.out::println)
+                .findFirst()
+                .ifPresentOrElse(skyscraper -> System.out.println(),
+                        () -> System.out.println("небоскреба выше километра - нет"));
     }
 }
